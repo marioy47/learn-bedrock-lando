@@ -1,0 +1,29 @@
+# .github/workflows/deploy 
+name: Deploy to Fortrabbit
+
+# Trigger this workflow on push (could also be in pull or merge) on a specific branch
+on:
+  push:
+    branches: [ main ]
+
+# A workflow is made of multiple jobs that can run sequentially or in parallel
+jobs:
+
+  # First (and in this case only) job
+  build:
+    runs-on: ubuntu-latest
+
+    # Task to be executed with this runner
+    steps:
+      # Checkout the repo into $GITHUB_WORKSPACE
+      - uses: actions/checkout@v3
+
+      # Sync the repo with Fortrabit
+      - name: Sync Repo
+        uses: wei/git-sync@v3
+        with:
+          source_repo: "marioy47/learn-bedrock-lando" # GitHub project
+          source_branch: "main"
+          destination_repo: "learn-bedr-lando.pul9c9a3seoafpi9@deploy.us1.frbit.com:learn-bedr-lando.git" # Get it from Fortrabbit panel for the App
+          destination_branch: "main"
+          destination_ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }} # ????
