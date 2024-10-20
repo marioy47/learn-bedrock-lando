@@ -1,12 +1,12 @@
 # .github/workflows/deploy 
 name: Deploy to Fortrabbit
 
-# Trigger this workflow on push (could allso be in pull or merge) on a specific branch
+# Trigger this workflow on push (could also be in pull or merge) on a specific branch
 on:
   push:
     branches: [ main ]
 
-# A workflow is made of multiple jobs tha can run sequentially or in parallel
+# A workflow is made of multiple jobs that can run sequentially or in parallel
 jobs:
 
   # First (and in this case only) job
@@ -26,5 +26,4 @@ jobs:
           source_branch: "main"
           destination_repo: "learn-bedr-lando.pul9c9a3seoafpi9@deploy.us1.frbit.com:learn-bedr-lando.git" # Get it from Fortrabbit panel for the App
           destination_branch: "main"
-          ssh_private_key: ${{secrets.SSH_PRIVATE_KEY}}
-          destination_ssh_private_key: ${{secrets.SSH_PRIVATE_KEY}} # ????
+          destination_ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }} # ????
