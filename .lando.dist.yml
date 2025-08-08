@@ -1,0 +1,58 @@
+# .lando.dist.yml
+
+# Create a .lando.yml file if you need to override any value: https://docs.lando.dev/services/lando-3.html#overrides
+
+name: learn-lando-bedrock
+recipe: wordpress
+
+config:
+  # https://docs.lando.dev/plugins/wordpress/config.html
+  php: "8.2"
+  composer_version: "2"
+  via: "nginx"
+  webroot: web
+  database: "mariadb:11.3"
+  xdebug: true
+
+services:
+  appserver:
+    overrides:
+      environment:
+        COMPOSER_CACHE_DIR: "/app/.cache/composer" # Saves a lot of time you need to rebuild
+        WP_CLI_CACHE_DIR: "/app/.cache/wp-cli" # Saves a lot of space
+    sslExpose: false # To avoid port scanning issues at startup https://docs.lando.dev/core/v3/proxy.html#using-https
+  redis:
+    type: redis
+  phpmyadmin:
+    type: phpmyadmin:5.0
+    ssl: true
+    sslExpose: false
+    hosts:
+      - database
+  mail:
+    type: mailhog
+    hogfrom:
+      - appserver
+    ssl: true
+    sslExpose: false # To avoid port scanning issues at startup https://docs.lando.dev/core/v3/proxy.html#using-https
+  node:
+    type: node:20
+    run:
+      - npm config set cache /app/.cache/npm
+    command: tail -f /dev/null # Keep it running for faster command execution
+
+proxy:
+  phpmyadmin:
+    - learn-lando-bedrock-pma.lndo.site
+
+  mail:
+    - learn-lando-bedrock-mail.lndo.site
+
+tooling:
+  wp:
+    service: appserver
+    dir: /app/web
+  npm:
+    service: node
+  npx:
+    service: node
