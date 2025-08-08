@@ -29,3 +29,6 @@ wp-cli.local.yml
 
 # Composer and wp-cli local cache
 .cache
+
+# Redis cache is only for local development
+web/app/object-cache.php
