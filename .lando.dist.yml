@@ -21,6 +21,9 @@ services:
         COMPOSER_CACHE_DIR: "/app/.cache/composer" # Saves a lot of time you need to rebuild
         WP_CLI_CACHE_DIR: "/app/.cache/wp-cli" # Saves a lot of space
     sslExpose: false # To avoid port scanning issues at startup https://docs.lando.dev/core/v3/proxy.html#using-https
+    run:
+      - composer install
+      - wp core install --title="Learn Lando Bedrock" --admin_user=admin --admin_password=password --admin_email=admin@example.com --url=https://learn-lando-bedrock.lndo.site/wp
   redis:
     type: redis
   phpmyadmin:
